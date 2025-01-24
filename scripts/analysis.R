@@ -2,32 +2,12 @@ library(ggplot2)
 library(readr)
 library(reshape2)
 
-ch_danger_1 <- read_csv(
-  "../data/max_danger/CHN_Cho-2_2_I-1-1-multi-planner-simulation-result_max_danger_1.csv"
-)
-
-ch_danger_2 <- read_csv(
-  "../data/max_danger/CHN_Cho-2_2_I-1-1-multi-planner-simulation-result_max_danger_2.csv"
-)
-
-ch_danger_3 <- read_csv(
-  "../data/max_danger/CHN_Cho-2_2_I-1-1-multi-planner-simulation-result_max_danger_3.csv"
-)
-
-col_danger_1 <-
-  read_csv(
-    "../data/max_danger/DEU_Cologne-79_2_I-1-multi-planner-simulation-result_max_danger_1.csv"
-  )
-
-col_danger_2 <-
-  read_csv(
-    "../data/max_danger/DEU_Cologne-79_2_I-1-multi-planner-simulation-result_max_danger_2.csv"
-  )
-
-col_danger_3 <-
-  read_csv(
-    "../data/max_danger/DEU_Cologne-79_2_I-1-multi-planner-simulation-result_max_danger_3.csv"
-  )
+ch_danger_1 <- read_csv("../data/max_danger/CHN_Cho-2_2_I-1-1-multi-planner-simulation-result_max_danger_1.csv")
+ch_danger_2 <- read_csv("../data/max_danger/CHN_Cho-2_2_I-1-1-multi-planner-simulation-result_max_danger_2.csv")
+ch_danger_3 <- read_csv("../data/max_danger/CHN_Cho-2_2_I-1-1-multi-planner-simulation-result_max_danger_3.csv")
+col_danger_1 <- read_csv("../data/max_danger/DEU_Cologne-79_2_I-1-multi-planner-simulation-result_max_danger_1.csv")
+col_danger_2 <- read_csv("../data/max_danger/DEU_Cologne-79_2_I-1-multi-planner-simulation-result_max_danger_2.csv")
+col_danger_3 <- read_csv("../data/max_danger/DEU_Cologne-79_2_I-1-multi-planner-simulation-result_max_danger_3.csv")
 
 us15_danger_1 <-
   read_csv(
@@ -222,16 +202,16 @@ a12_danger_random_emergency <-
 p_danger_random_emergency <- wilcox.test(all_danger$emergency_maneuvers, all_random$emergency_maneuvers)
 
 # plot data
-boxplot_algorithms_ch_emergency <- boxplot(all_ch$emergency_maneuvers ~ all_ch$algorithm)
-boxplot_algorithms_ch_interactions <- boxplot(all_ch$interactions ~ all_ch$algorithm)
-boxplot_algorithms_ch_goals_not_reached <- boxplot(all_ch$goals_not_reached ~ all_ch$algorithm)
+boxplot_algorithms_ch_emergency <- boxplot(all_ch$emergency_maneuvers ~ all_ch$algorithm, names = c("TIAV","RandGen"))
+boxplot_algorithms_ch_interactions <- boxplot(all_ch$interactions ~ all_ch$algorithm, names = c("TIAV","RandGen"))
+boxplot_algorithms_ch_goals_not_reached <- boxplot(all_ch$goals_not_reached ~ all_ch$algorithm, names = c("TIAV","RandGen"))
 
 
 # analysis for effects of the different algorithms
-ggplot(all_data, aes(factor(algorithm), emergency_maneuvers, fill = scenario)) + stat_summary(fun = "mean", geom = "bar", position = "dodge") + scale_fill_brewer(palette = "Set1")
-ggplot(all_data, aes(factor(algorithm), goals_not_reached, fill = scenario)) + stat_summary(fun = "mean", geom = "bar", position = "dodge") + scale_fill_brewer(palette = "Set1")
-ggplot(all_data, aes(factor(algorithm), interactions, fill = scenario)) + stat_summary(fun = "mean", geom = "bar", position = "dodge") + scale_fill_brewer(palette = "Set1")
-ggplot(all_data, aes(factor(algorithm), collisions, fill = scenario))  + stat_summary(fun = "mean", geom = "bar", position = "dodge") + scale_fill_brewer(palette = "Set1")
+ggplot(all_data, aes(factor(algorithm), emergency_maneuvers, fill = scenario)) + stat_summary(fun = "mean", geom = "bar", position = "dodge") + scale_fill_brewer(palette = "Set1", labels=c("MR","OLR","MLR","RR"))
+ggplot(all_data, aes(factor(algorithm), goals_not_reached, fill = scenario)) + stat_summary(fun = "mean", geom = "bar", position = "dodge") + scale_fill_brewer(palette = "Set1", labels=c("MR","OLR","MLR","RR"))
+ggplot(all_data, aes(factor(algorithm), interactions, fill = scenario)) + stat_summary(fun = "mean", geom = "bar", position = "dodge") + scale_fill_brewer(palette = "Set1", labels=c("MR","OLR","MLR","RR"))
+ggplot(all_data, aes(factor(algorithm), collisions, fill = scenario))  + stat_summary(fun = "mean", geom = "bar", position = "dodge") + scale_fill_brewer(palette = "Set1", labels=c("MR","OLR","MLR","RR"))
 
 
 # analysis for effects of each scenario
@@ -253,22 +233,22 @@ average_values_ch <- c(avg_emergency_ch_danger,
                        avg_goals_not_reached_ch_random,
                        avg_interactions_ch_danger,
                        avg_interactions_ch_random)
-algorithm_labels_ch <- c("max_danger",
-                         "random",
-                         "max_danger",
-                         "random",
-                         "max_danger",
-                         "random",
-                         "max_danger",
-                         "random")
-variable_labels_ch <- c("emergency_maneuvers",
-                        "emergency_maneuvers",
-                        "collisions",
-                        "collisions",
-                        "goals_not_reached",
-                        "goals_not_reached",
-                        "interactions",
-                        "interactions")
+algorithm_labels_ch <- c("TIAV",
+                         "RandGen",
+                         "TIAV",
+                         "RandGen",
+                         "TIAV",
+                         "RandGen",
+                         "TIAV",
+                         "RandGen")
+variable_labels_ch <- c("EM",
+                        "EM",
+                        "COL",
+                        "COL",
+                        "GNR",
+                        "GNR",
+                        "INT",
+                        "INT")
 avg_labeled_ch <- data.frame(average_values_ch, algorithm_labels_ch, variable_labels_ch)
 
 ggplot(avg_labeled_ch, aes(x=algorithm_labels_ch, y=average_values_ch, fill = variable_labels_ch)) +
@@ -293,22 +273,22 @@ average_values_col <- c(avg_emergency_col_danger,
                         avg_goals_not_reached_col_random,
                         avg_interactions_col_danger,
                         avg_interactions_col_random)
-algorithm_labels_col <- c("max_danger",
-                          "random",
-                          "max_danger",
-                          "random",
-                          "max_danger",
-                          "random",
-                          "max_danger",
-                          "random")
-variable_labels_col <- c("emergency_maneuvers",
-                         "emergency_maneuvers",
-                         "collisions",
-                         "collisions",
-                         "goals_not_reached",
-                         "goals_not_reached",
-                         "interactions",
-                         "interactions")
+algorithm_labels_col <- c("TIAV",
+                          "RandGen",
+                          "TIAV",
+                          "RandGen",
+                          "TIAV",
+                          "RandGen",
+                          "TIAV",
+                          "RandGen")
+variable_labels_col <- c("EM",
+                         "EM",
+                         "COL",
+                         "COL",
+                         "GNR",
+                         "GNR",
+                         "INT",
+                         "INT")
 avg_labeled_col <- data.frame(average_values_col, algorithm_labels_col, variable_labels_col)
 
 ggplot(avg_labeled_col, aes(x=algorithm_labels_col, y=average_values_col, fill = variable_labels_col)) +
@@ -333,22 +313,22 @@ average_values_us15 <- c(avg_emergency_us15_danger,
                          avg_goals_not_reached_us15_random,
                          avg_interactions_us15_danger,
                          avg_interactions_us15_random)
-algorithm_labels_us15 <- c("max_danger",
-                           "random",
-                           "max_danger",
-                           "random",
-                           "max_danger",
-                           "random",
-                           "max_danger",
-                           "random")
-variable_labels_us15 <- c("emergency_maneuvers",
-                          "emergency_maneuvers",
-                          "collisions",
-                          "collisions",
-                          "goals_not_reached",
-                          "goals_not_reached",
-                          "interactions",
-                          "interactions")
+algorithm_labels_us15 <- c("TIAV",
+                           "RandGen",
+                           "TIAV",
+                           "RandGen",
+                           "TIAV",
+                           "RandGen",
+                           "TIAV",
+                           "RandGen")
+variable_labels_us15 <- c("EM",
+                          "EM",
+                          "COL",
+                          "COL",
+                          "GNR",
+                          "GNR",
+                          "INT",
+                          "INT")
 avg_labeled_us15 <- data.frame(average_values_us15, algorithm_labels_us15, variable_labels_us15)
 
 ggplot(avg_labeled_us15, aes(x=algorithm_labels_us15, y=average_values_us15, fill = variable_labels_us15)) +
@@ -373,22 +353,22 @@ average_values_us23 <- c(avg_emergency_us23_danger,
                          avg_goals_not_reached_us23_random,
                          avg_interactions_us23_danger,
                          avg_interactions_us23_random)
-algorithm_labels_us23 <- c("max_danger",
-                           "random",
-                           "max_danger",
-                           "random",
-                           "max_danger",
-                           "random",
-                           "max_danger",
-                           "random")
-variable_labels_us23 <- c("emergency_maneuvers",
-                          "emergency_maneuvers",
-                          "collisions",
-                          "collisions",
-                          "goals_not_reached",
-                          "goals_not_reached",
-                          "interactions",
-                          "interactions")
+algorithm_labels_us23 <- c("TIAV",
+                           "RandGen",
+                           "TIAV",
+                           "RandGen",
+                           "TIAV",
+                           "RandGen",
+                           "TIAV",
+                           "RandGen")
+variable_labels_us23 <- c("EM",
+                          "EM",
+                          "COL",
+                          "COL",
+                          "GNR",
+                          "GNR",
+                          "INT",
+                          "INT")
 avg_labeled_us23 <- data.frame(average_values_us23, algorithm_labels_us23, variable_labels_us23)
 
 ggplot(avg_labeled_us23, aes(x=algorithm_labels_us23, y=average_values_us23, fill = variable_labels_us23)) +
