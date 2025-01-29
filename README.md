@@ -1,4 +1,4 @@
-# Automatically Testing Autonomous Vehicle Interactions
+# Automatically Testing Interacting Autonomous Vehicles
 
 This repository contains the replication package for the paper titled *Automatically Testing Interacting Autonomous Vehicles* submitted to IV 2025.
 
