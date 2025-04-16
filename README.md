@@ -1,6 +1,6 @@
-# Automatically Testing Interacting Autonomous Vehicles
+# TIAV - Generation of Critical Interactive Scenarios for Trajectory Planning
 
-This repository contains the replication package for the paper titled *Automatically Testing Interacting Autonomous Vehicles* submitted to IV 2025.
+This repository contains the replication package for the paper titled *Generation of Critical Interactive Scenarios for Trajectory Planning* accepted for publication at IV 2025.
 
 ## Repository Content
 
